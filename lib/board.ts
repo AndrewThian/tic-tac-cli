@@ -1,5 +1,3 @@
-import { Player } from "./player";
-
 export interface IBoard {
     grid: string[][]
     readonly boardSize: number

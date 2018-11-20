@@ -4,9 +4,9 @@ type PlayerNumber = 1 | 2
 const symbols: Mark[] = [ "x", "o" ] 
 
 export class Player {
-    playerNumber: PlayerNumber
     name: string
-    symbol: Mark
+    readonly playerNumber: PlayerNumber
+    readonly symbol: Mark
 
     constructor (playerNumber: 1 | 2, name: string) {
         this.playerNumber = playerNumber;
