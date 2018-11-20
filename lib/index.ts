@@ -2,7 +2,6 @@ import readline from "readline";
 import EventEmitter from "events";
 import { Player } from "./player";
 import { Board, IBoard } from "./board";
-import { R_OK } from "constants";
 
 const _event = new EventEmitter();
 const rlConfig = { 
@@ -44,21 +43,17 @@ class State {
     playerPool: Player[];
     currentTurn: number
 
-    constructor (p1: Player, p2: Player, currentTurn: number = 1) {
+    constructor (p1: Player, p2: Player, currentTurn: number = 2) {
         this.playerPool = [p1, p2];
         this.currentTurn = currentTurn;
     }
 
     currentPlayer = () => {
-        return this.playerPool[this.currentTurn - 1]
+        return this.playerPool[this.currentTurn % 2]
     }
     
     nextTurn = () => {
-        if (this.currentTurn === 1) {
-            this.currentTurn = 2
-        } else {
-            this.currentTurn = 1
-        }
+        this.currentTurn += 1
     }
 }
 
@@ -104,9 +99,9 @@ _event.on("player turn", ({ gameState, board, value }: PlayerTurnData) => {
     const currentPlayer = gameState.currentPlayer()
     const [ row, col ] = board.convertInputToCoordinates(inputNumber)
     board.markSquare(currentPlayer.symbol, row, col)
-    board.print();
 
     // print board
+    board.print();
     // check win
     // go next turn
 
