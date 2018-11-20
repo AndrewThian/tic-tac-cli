@@ -2,7 +2,7 @@ import { Player } from "./player";
 
 export interface IBoard {
     grid: string[][]
-    boardSize: number
+    readonly boardSize: number
     winCondition: number
 
     print(): void;
@@ -12,8 +12,8 @@ export interface IBoard {
 
 export class Board implements IBoard{
     grid: string[][]
-    boardSize: number
-    winCondition: number
+    readonly boardSize: number;
+    readonly winCondition: number;
 
     constructor (boardSize: number, winCondition: number = 3) {
         this.boardSize = boardSize;
@@ -45,7 +45,6 @@ export class Board implements IBoard{
         }, [])
 
         const line = this.drawBreakLine(this.boardSize)
-        console.log() // print new line
         console.log(printable.join(line))
     }
 
@@ -65,6 +64,10 @@ export class Board implements IBoard{
     }
 
     markSquare(symbol: "x" | "o", row: number, col: number) {
+        if (row > this.boardSize || col <= 0) {
+            console.warn("woops invalid coordinates")
+            return
+        }
         this.grid[row][col] = symbol;
     }
 
