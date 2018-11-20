@@ -1,1 +1,123 @@
-console.log("321")
+import readline from "readline";
+import EventEmitter from "events";
+import { Player } from "./player";
+import { Board, IBoard } from "./board";
+import { R_OK } from "constants";
+
+const _event = new EventEmitter();
+const rlConfig = { 
+    input: process.stdin, 
+    output: process.stdout,
+    terminal: false
+}
+
+const rl = readline.createInterface(rlConfig);
+const prefix = ">> "
+rl.setPrompt(prefix)
+
+interface GameData {
+    p1: Player
+    p2: Player
+    board: IBoard
+}
+
+const setPlayers = () => {
+    rl.question("Enter name of player 1 \n>> ", (name: string) => {
+        const p1 = new Player(1, name)
+        console.log(`P1: ${p1.name}, symbol: ${p1.symbol}`)
+        rl.prompt();
+        rl.question("Enter name of player 2 \n>> ", (name: string) => {
+            const p2 = new Player(2, name)
+            console.log(`P1: ${p2.name}, symbol: ${p2.symbol}`)
+            rl.prompt();
+            rl.question("Enter board size \n>> ", (size: string) => {
+                const board = new Board(parseInt(size, 10))
+                _event.emit("start game", {
+                    p1, p2, board
+                })
+            })
+        })
+    })
+}
+
+class State {
+    playerPool: Player[];
+    currentTurn: number
+
+    constructor (p1: Player, p2: Player, currentTurn: number = 1) {
+        this.playerPool = [p1, p2];
+        this.currentTurn = currentTurn;
+    }
+
+    currentPlayer = () => {
+        return this.playerPool[this.currentTurn - 1]
+    }
+    
+    nextTurn = () => {
+        if (this.currentTurn === 1) {
+            this.currentTurn = 2
+        } else {
+            this.currentTurn = 1
+        }
+    }
+}
+
+const questionPlayer = (gameState: State) => {
+    rl.setPrompt(`${gameState.currentPlayer().name}, choose a box to place an '${gameState.currentPlayer().symbol}' \n >> `)
+    rl.prompt();
+}
+
+_event.on("start game", ({ p1, p2, board }: GameData) => {
+    board.print();
+
+    const gameState = new State(p1, p2);
+
+    // rl.setPrompt(`${gameState.currentPlayer().name}, choose a box to place an '${gameState.currentPlayer().symbol}' \n >> `)
+    // rl.prompt();
+    questionPlayer(gameState)
+
+    rl.on("line", (value: string) => {
+        if (value.match(/^[0-9]+$/)) {
+            _event.emit("player turn", { gameState, board, value })
+        } else if (value === "exit") {
+            rl.close();
+        }
+    }).on("close", () => {
+        process.exit(0);
+    })
+})
+
+interface PlayerTurnData {
+    gameState: State
+    board: Board
+    value: string
+}
+
+_event.on("player turn", ({ gameState, board, value }: PlayerTurnData) => {
+    // mark square on board
+    const inputNumber = parseInt(value)
+    if (inputNumber > board.maxGridNumber()) {
+        console.log("woops, invalid number");
+        questionPlayer(gameState);
+        return
+    }
+    const currentPlayer = gameState.currentPlayer()
+    const [ row, col ] = board.convertInputToCoordinates(inputNumber)
+    board.markSquare(currentPlayer.symbol, row, col)
+    board.print();
+
+    // print board
+    // check win
+    // go next turn
+
+    // board.print();
+    // do logic of current user turn
+    // then call next turn
+    gameState.nextTurn();
+    // const currentPlayer = gameState.currentPlayer()
+    // rl.setPrompt(`${currentPlayer.name}, choose a box to place an '${currentPlayer.symbol}' \n >> `)
+    // rl.prompt();
+    questionPlayer(gameState)
+})
+
+setPlayers()
