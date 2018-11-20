@@ -1,15 +1,21 @@
+import { Mark } from "./player"
+
 export interface IBoard {
     grid: string[][]
     readonly boardSize: number
-    winCondition: number
+    readonly winCondition: number
 
     print(): void;
     create(boardSize: number): string[][]
+    markSquare(symbol: Mark, row: number, col: number): void;
     drawBreakLine(n: number): string
+    maxGridNumber(): number
+    valueFromCoordinates(row: number, col: number): string;
+    convertInputToCoordinates(inputNumber: number): [number, number]
 }
 
 export class Board implements IBoard{
-    grid: string[][]
+    readonly grid: string[][]
     readonly boardSize: number;
     readonly winCondition: number;
 
@@ -61,8 +67,8 @@ export class Board implements IBoard{
         return line
     }
 
-    markSquare(symbol: "x" | "o", row: number, col: number) {
-        if (row > this.boardSize || col <= 0) {
+    markSquare(symbol: Mark, row: number, col: number) {
+        if (row > this.boardSize || col < 0) {
             console.warn("woops invalid coordinates")
             return
         }
@@ -89,5 +95,9 @@ export class Board implements IBoard{
         const row = Math.floor(arrayNumber / this.boardSize)
         const col = arrayNumber % this.boardSize
         return [ row, col ]
+    }
+
+    valueFromCoordinates(row: number, col: number): string {
+        return this.grid[row][col]
     }
 }
