@@ -74,4 +74,13 @@ describe("Board testsuite", () => {
 
         board.print();
     })
+    test(`#valueFromCoordinates should return the value when provided the coordinates`, () => {
+        const board = new Board(boardSize, 3)
+        const row = 2
+        const col = 2
+        board.markSquare("x", row, col)
+        const value = board.valueFromCoordinates(row, col)
+
+        expect(value).toEqual("x")
+    })
 })
