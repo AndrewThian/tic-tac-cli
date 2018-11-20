@@ -1,5 +1,6 @@
 import { IBoard } from "./board";
 import { Mark } from "./player";
+import { Traverse } from "./traverse";
 
 export interface IGame {
     readonly board: IBoard
@@ -40,29 +41,18 @@ export class Game implements IGame {
             return 0
         }
         let counter = 1
-        let [leftRow, leftCol] = this.traverseHorizontal(row, col, "left")
-        let [rightRow, rightCol] = this.traverseHorizontal(row, col, "right")
-
+        let [leftRow, leftCol] = Traverse.left(row, col)
+        let [rightRow, rightCol] = Traverse.right(row, col)
+        // check left
         if (leftCol >= 0 && !seen.has(`${leftRow}-${leftCol}`)) {
             const left = self.horizontal(symbol, leftRow, leftCol, seen)
             counter += left;
         }
+        // check right
         if (rightCol >= 0 && !seen.has(`${rightRow}-${rightCol}`)) {
             const right = self.horizontal(symbol, rightRow, rightCol, seen)
             counter += right
         }
         return counter
-    }
-
-    traverseHorizontal(row: number, col: number, direction: "left" | "right"): [number, number] {
-        switch(direction) {
-            case "left":
-                return [row, col - 1]
-            case "right":
-                return [row, col + 1]
-            default:
-                console.warn("invalid direction")
-                return
-        }
     }
 }
