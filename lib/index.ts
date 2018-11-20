@@ -31,7 +31,7 @@ const setPlayers = () => {
             rl.prompt();
             rl.question("Enter board size \n>> ", (size: string) => {
                 const board = new Board(parseInt(size, 10))
-                _event.emit("start game", {
+                _event.emit("start", {
                     p1, p2, board
                 })
             })
@@ -39,21 +39,29 @@ const setPlayers = () => {
     })
 }
 
+type GameplayStatus = "start" | "init" | "turn"
+
 class State {
     playerPool: Player[];
     currentTurn: number
+    currentState: GameplayStatus
 
-    constructor (p1: Player, p2: Player, currentTurn: number = 2) {
+    constructor (p1: Player, p2: Player, currentTurn: number = 2, currentState: GameplayStatus = "init") {
         this.playerPool = [p1, p2];
         this.currentTurn = currentTurn;
+        this.currentState = currentState;
     }
 
-    currentPlayer = () => {
+    currentPlayer = (): Player => {
         return this.playerPool[this.currentTurn % 2]
     }
     
-    nextTurn = () => {
+    nextTurn = (): void => {
         this.currentTurn += 1
+    }
+
+    currentGameStatus = (): GameplayStatus => {
+        return this.currentState
     }
 }
 
@@ -62,7 +70,7 @@ const questionPlayer = (gameState: State) => {
     rl.prompt();
 }
 
-_event.on("start game", ({ p1, p2, board }: GameData) => {
+_event.on("start", ({ p1, p2, board }: GameData) => {
     board.print();
 
     const gameState = new State(p1, p2);
@@ -73,7 +81,7 @@ _event.on("start game", ({ p1, p2, board }: GameData) => {
 
     rl.on("line", (value: string) => {
         if (value.match(/^[0-9]+$/)) {
-            _event.emit("player turn", { gameState, board, value })
+            _event.emit("turn", { gameState, board, value })
         } else if (value === "exit") {
             rl.close();
         }
@@ -88,7 +96,7 @@ interface PlayerTurnData {
     value: string
 }
 
-_event.on("player turn", ({ gameState, board, value }: PlayerTurnData) => {
+_event.on("turn", ({ gameState, board, value }: PlayerTurnData) => {
     // mark square on board
     const inputNumber = parseInt(value)
     if (inputNumber > board.maxGridNumber()) {
