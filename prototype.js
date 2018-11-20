@@ -89,6 +89,9 @@ class TicTacToe {
         console.log("current col: ", col)
         const lookForwardNeg = row - 1
         const lookForwardPos = row + 1
+        // look forward and check if coordinates have been seen
+        // if not, traverse to that node and perform another vertical check
+        // add 1 to returning value
         if (lookForwardNeg >= 0 && !seen.has(`${lookForwardNeg}-${col}`)) {
             console.log(">> Moving 1 row up")
             const check1RowUp = self.verticalCheck(symbol, row - 1, col, seen)
