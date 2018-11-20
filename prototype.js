@@ -60,7 +60,10 @@ class TicTacToe {
     }
 
     checkWin(symbol, row, col) {
-        let verticalCheck = this.verticalCheck(symbol, row, col, new Set()) 
+        let verticalCheck = this.verticalCheck(symbol, row, col, new Set())
+        if (verticalCheck >= this.winCondition) {
+            return true
+        }
         let horizontalCheck = this.horizontalCheck(symbol, row, col, new Set())
         let forwardDiagonalCheck = this.forwardDiagonalCheck(symbol, row, col, new Set())
         let backwardDiagonalCheck = this.backwardDiagonalCheck(symbol, row, col, new Set())
@@ -191,9 +194,9 @@ class TicTacToe {
     }
 }
 
-const newGame = new TicTacToe(4, 3)
+const newGame = new TicTacToe(3, 3)
 console.log(newGame.board)
 // console.log(newGame)
-newGame.play(1, "O")
+newGame.play(3, "O")
 newGame.play(6, "O")
-newGame.play(11, "O")
+newGame.play(9, "O")
