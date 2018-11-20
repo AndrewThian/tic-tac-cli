@@ -1,5 +1,5 @@
-type Mark = "x" | "o"
-type PlayerNumber = 1 | 2
+export type Mark = "x" | "o"
+export type PlayerNumber = 1 | 2
 
 const symbols: Mark[] = [ "x", "o" ] 
 
