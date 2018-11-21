@@ -62,7 +62,12 @@ export class Game implements IGame {
         );
     }
 
-    horizontal(symbol: Mark, row: number, col: number, seen: Set<string>): number {
+    horizontal(
+        symbol: Mark,
+        row: number,
+        col: number,
+        seen: Set<string>
+    ): number {
         const currentPosition = `${row}-${col}`;
         seen.add(currentPosition);
         if (this.board.valueFromCoordinates(row, col) !== symbol) {

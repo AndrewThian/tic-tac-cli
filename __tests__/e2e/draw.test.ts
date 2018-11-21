@@ -19,7 +19,7 @@ describe("e2e gameplay draw test suite", () => {
 
             gameloop.map((loop, index) => {
                 if (index === gameloop.length - 1) {
-                    expect(game.play(loop, symbols[index % 2])).toEqual("draw")
+                    expect(game.play(loop, symbols[index % 2])).toEqual("draw");
                 } else {
                     game.play(loop, symbols[index % 2]);
                 }
