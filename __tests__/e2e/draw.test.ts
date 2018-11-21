@@ -13,40 +13,16 @@ describe("e2e gameplay draw test suite", () => {
             const board = new Board(3);
             const game = new Game(board);
             const symbols: any = ["x", "o"];
-            const gameloop = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            const gameloop = [1, 2, 3, 4, 5, 6, 8, 7, 9];
+
+            board.print();
 
             gameloop.map((loop, index) => {
-                game.play(loop, symbols[index % 2]);
-            });
-        });
-        test("game draw condiiton 4x4", () => {
-            const boardSize = 4;
-            const board = new Board(boardSize);
-            const game = new Game(board);
-            const symbols: any = ["x", "o"];
-            const gameloop = [];
-
-            for (let i = 1; i <= boardSize * boardSize; i++) {
-                gameloop.push(i);
-            }
-
-            gameloop.map((loop, index) => {
-                game.play(loop, symbols[index % 2]);
-            });
-        });
-        test("game draw condiiton 5x5", () => {
-            const boardSize = 5;
-            const board = new Board(boardSize);
-            const game = new Game(board);
-            const symbols: any = ["x", "o"];
-            const gameloop = [];
-
-            for (let i = 1; i <= boardSize * boardSize; i++) {
-                gameloop.push(i);
-            }
-
-            gameloop.map((loop, index) => {
-                game.play(loop, symbols[index % 2]);
+                if (index === gameloop.length - 1) {
+                    expect(game.play(loop, symbols[index % 2])).toEqual("draw")
+                } else {
+                    game.play(loop, symbols[index % 2]);
+                }
             });
         });
     });
