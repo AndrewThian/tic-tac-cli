@@ -53,6 +53,49 @@ describe("<Game> clas test suite", () => {
             expect(game.checkWin("x", 0, 0, winCondition)).toBeFalsy();
         });
     });
+    describe("#diagonalFront", () => {
+        test("should traverse upRight and downLeft", () => {
+            const mockUpRight = jest.spyOn(Traverse, "upRight");
+            const mockDownLeft = jest.spyOn(Traverse, "downLeft");
+
+            const board = new Board(3)
+            board.markSquare("x", 1, 1)
+            const game = new Game(board)
+            game.diagonalFront("x", 1, 1, new Set())
+            
+            expect(mockUpRight).toBeCalled();
+            expect(mockDownLeft).toBeCalled();
+        })
+        describe("recursive test cases", () => {
+            test("should be called recursively 2x on 1 play", () => {
+                const board = new Board(boardSize);
+                const game = new Game(board);
+                const mock = jest.spyOn(game, "diagonalFront");
+                game.play(3, "x")
+
+                expect(mock).toBeCalledTimes(2);
+            })
+            test("should be called recursively 5x on 2 play", () => {
+                const board = new Board(boardSize);
+                const game = new Game(board);
+                const mock = jest.spyOn(game, "diagonalFront");
+                game.play(3, "x")
+                game.play(5, "x")
+
+                expect(mock).toBeCalledTimes(5);
+            })
+            test("should be called recursively 8x on 2 play", () => {
+                const board = new Board(boardSize);
+                const game = new Game(board);
+                const mock = jest.spyOn(game, "diagonalFront");
+                game.play(3, "x")
+                game.play(5, "x")
+                game.play(7, "x")
+
+                expect(mock).toBeCalledTimes(8);
+            })
+        })
+    })
     describe("#vertical" , () => {
         test("should traverse up and down", () => {
             const mockUp = jest.spyOn(Traverse, "up");
@@ -65,7 +108,7 @@ describe("<Game> clas test suite", () => {
             expect(mockUp).toBeCalled();
             expect(mockDown).toBeCalled();
         })
-        describe.only("recursive test cases", () => {
+        describe("recursive test cases", () => {
             test("should be called recursively 2x on 1 play", () => {
                 const board = new Board(boardSize);
                 const game = new Game(board);
@@ -83,7 +126,7 @@ describe("<Game> clas test suite", () => {
 
                 expect(mock).toBeCalledTimes(5);
             })
-            test("should be called recursively 9x on 3 play", () => {
+            test("should be called recursively 8x on 3 play", () => {
                 const board = new Board(boardSize);
                 const game = new Game(board);
                 const mock = jest.spyOn(game, "vertical");

@@ -66,4 +66,36 @@ describe("e2e gameplay win test suite", () => {
             expect(game.play(25, "x")).toEqual("win")
         });
     })
+    describe("frontslash win conditions", () => {
+        beforeEach(() => {
+            console.log = jest.fn(() => {});
+        });
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+        test("game win condition 3x3", () => {
+            const board = new Board(3);
+            const game = new Game(board);
+    
+            game.play(3, "x")
+            game.play(5, "x")
+            expect(game.play(7, "x")).toEqual("win")
+        });
+        test("game win condition 4x4", () => {
+            const board = new Board(4);
+            const game = new Game(board);
+    
+            game.play(4, "x")
+            game.play(7, "x")
+            expect(game.play(10, "x")).toEqual("win")
+        });
+        test("game win condition 5x5", () => {
+            const board = new Board(5);
+            const game = new Game(board);
+
+            game.play(3, "x")
+            game.play(7, "x")
+            expect(game.play(11, "x")).toEqual("win")
+        });
+    })
 });

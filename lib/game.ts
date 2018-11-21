@@ -52,7 +52,8 @@ export class Game implements IGame {
     ): boolean {
         let horizontalCheck = this.horizontal(symbol, row, col, new Set());
         let verticalCheck = this.vertical(symbol, row, col, new Set())
-        return horizontalCheck >= winCondition || verticalCheck >= winCondition;
+        let frontSlashCheck = this.diagonalFront(symbol, row, col, new Set())
+        return horizontalCheck >= winCondition || verticalCheck >= winCondition || frontSlashCheck >= winCondition;
     }
 
     horizontal(
@@ -103,4 +104,31 @@ export class Game implements IGame {
         }
         return counter;
     }
+
+    diagonalFront(symbol: Mark, row: number, col: number, seen: Set<string>) {
+        const currentPosition = `${row}-${col}`
+        seen.add(currentPosition)
+        if (this.board.valueFromCoordinates(row, col) !== symbol) {
+            return 0
+        }
+        let counter = 1
+        let [upRightRow, upRightCol] = Traverse.upRight(row, col);
+        let [downLeftRow, downLeftCol] = Traverse.downLeft(row, col);
+        // check upRight
+        if (upRightRow >= 0 && upRightCol < this.board.boardSize && !seen.has(`${upRightRow}-${upRightCol}`)) {
+            const upRight = this.diagonalFront(symbol, upRightRow, upRightCol, seen);
+            counter += upRight;
+        }
+        // check downLeft
+        if (downLeftRow < this.board.boardSize && downLeftCol >= 0 && !seen.has(`${downLeftRow}-${downLeftCol}`)) {
+            const downLeft = this.diagonalFront(symbol, downLeftRow, downLeftCol, seen);
+            counter += downLeft;
+        }
+        return counter;
+    }
+
+    // diagonalBack(symbol: Mark, row: number, col: number, seen: Set<string>) {
+    //     const currentPosition = `${row}-${col}`
+    //     seen.add(currentPosition);
+    // }
 }

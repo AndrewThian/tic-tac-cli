@@ -4,7 +4,6 @@ import { Board } from "../../lib/board"
 describe("e2e gameplay draw test suite", () => {
     describe("draw conditions", () => {
         beforeEach(() => {
-            // ignore print
             console.log = jest.fn(() => {});
         });
         afterEach(() => {
