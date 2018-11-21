@@ -1,25 +1,25 @@
-import { Mark } from "./player"
+import { Mark } from "./player";
 
 export interface IBoard {
-    grid: string[][]
-    readonly boardSize: number
-    readonly winCondition: number
-
-    print(): void;
-    create(boardSize: number): string[][]
-    markSquare(symbol: Mark, row: number, col: number): boolean;
-    drawBreakLine(n: number): string
-    maxGridNumber(): number
-    valueFromCoordinates(row: number, col: number): string;
-    convertInputToCoordinates(inputNumber: number): [number, number]
-}
-
-export class Board implements IBoard{
-    readonly grid: string[][]
+    grid: string[][];
     readonly boardSize: number;
     readonly winCondition: number;
 
-    constructor (boardSize: number, winCondition: number = 3) {
+    print(): void;
+    create(boardSize: number): string[][];
+    markSquare(symbol: Mark, row: number, col: number): boolean;
+    drawBreakLine(n: number): string;
+    maxGridNumber(): number;
+    valueFromCoordinates(row: number, col: number): string;
+    convertInputToCoordinates(inputNumber: number): [number, number];
+}
+
+export class Board implements IBoard {
+    readonly grid: string[][];
+    readonly boardSize: number;
+    readonly winCondition: number;
+
+    constructor(boardSize: number, winCondition: number = 3) {
         this.boardSize = boardSize;
         this.winCondition = winCondition;
 
@@ -35,59 +35,59 @@ export class Board implements IBoard{
             let column: string[] = [];
             grid[i] = column;
             for (let j = 0; j < row; j++) {
-                column.push(counter.toString())
-                counter++
+                column.push(counter.toString());
+                counter++;
             }
         }
-        return grid
+        return grid;
     }
 
     print(): void {
         const printable = this.grid.reduce((acc, curr: string[]) => {
-            const row = ` ${curr.join(" | ")} \n`
-            return acc.concat(row)
-        }, [])
+            const row = ` ${curr.join(" | ")} \n`;
+            return acc.concat(row);
+        }, []);
 
-        const line = this.drawBreakLine(this.boardSize)
-        console.log(printable.join(line))
+        const line = this.drawBreakLine(this.boardSize);
+        console.log(printable.join(line));
     }
 
     /**
-     * 
+     *
      * @param n board size
      */
     drawBreakLine(n: number): string {
         let line: string = "";
-        let numberOfDashes = this.calculateNoOfDashes(n)
+        let numberOfDashes = this.calculateNoOfDashes(n);
         for (let i = 0; i < numberOfDashes; i++) {
-            line += "-"
+            line += "-";
         }
         // add breakline
-        line += "\n"
-        return line
+        line += "\n";
+        return line;
     }
 
     markSquare(symbol: Mark, row: number, col: number): boolean {
         if (row > this.boardSize || col < 0) {
-            console.warn("woops invalid number")
-            return false
+            console.warn("woops invalid number");
+            return false;
         }
         if (this.grid[row][col] === "x" || this.grid[row][col] === "o") {
-            console.warn("woops already have value")
-            return false
+            console.warn("woops already have value");
+            return false;
         }
         this.grid[row][col] = symbol;
-        return true
+        return true;
     }
 
     /**
-     * 
+     *
      * @param n board size
      * calculates the number of dashes need to fill a 3 x 3 grid
      * current implementation incapable of dealing with > 3 grid.
      */
     calculateNoOfDashes(n: number): number {
-        return n * 3 + (n - 1)
+        return n * 3 + (n - 1);
     }
 
     maxGridNumber(): number {
@@ -96,13 +96,13 @@ export class Board implements IBoard{
 
     convertInputToCoordinates(inputNumber: number): [number, number] {
         // normalize number to array index numerical order
-        const arrayNumber = inputNumber - 1
-        const row = Math.floor(arrayNumber / this.boardSize)
-        const col = arrayNumber % this.boardSize
-        return [ row, col ]
+        const arrayNumber = inputNumber - 1;
+        const row = Math.floor(arrayNumber / this.boardSize);
+        const col = arrayNumber % this.boardSize;
+        return [row, col];
     }
 
     valueFromCoordinates(row: number, col: number): string {
-        return this.grid[row][col]
+        return this.grid[row][col];
     }
 }

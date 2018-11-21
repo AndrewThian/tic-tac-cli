@@ -7,7 +7,7 @@
     "test": "jest --forceExit --coverage --verbose",
     "watch": "nodemon --watch 'lib/**/*.ts' --exec 'ts-node -r tsconfig-paths/register' lib/index.ts",
     "type-check": "tsc --noEmit",
-    "prettify": "prettier --write --config ./.prettierrc '{lib,__tests__}/**/*.ts",
+    "prettify": "prettier --write --config ./.prettierrc '{lib,__tests__}/**/*.ts'",
     "build": "tsc"
   },
   "repository": {
