@@ -1,0 +1,4 @@
+trailingComman: "es5"
+parser: "typescript"
+tabWith: 4
+semi: true
