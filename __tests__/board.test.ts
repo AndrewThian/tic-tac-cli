@@ -44,24 +44,51 @@ describe("Board testsuite", () => {
         expect(row).toEqual(controlRow)
         expect(col).toEqual(controlCol)
     })
-    test(`#markSquare should warn if not valid coordinates`, () => {
-        const board = new Board(boardSize, 3)
-        const badRow = 1000
-        const badCol = 1000
-        const symbol = "o"
+    describe("#markSquare test scope", () => {
+        afterEach(() => {
+            jest.clearAllMocks();
+        })
+        test(`should warn if not valid coordinates and return false`, () => {
+            const board = new Board(boardSize, 3)
+            const badRow = 1000
+            const badCol = 1000
+            const symbol = "o"
+            console.warn = jest.fn(warn => {})
 
-        console.warn = jest.fn(warn => {})
-        board.markSquare(symbol, badRow, badCol)
-        expect(console.warn).toBeCalledTimes(1)
-    })
-    test(`#markSquare should mark based on coordinates`, () => {
-        const board = new Board(boardSize, 3)
-        const row = 1
-        const col = 1
-        const symbol = "x"
+            expect(board.markSquare(symbol, badRow, badCol)).toEqual(false)
+            expect(console.warn).toBeCalledTimes(1)
+        })
+        test(`should warn if coordinates already has a "o" and return false`, () => {
+            const board = new Board(boardSize)
+            const row = 1 
+            const col = 1
+            const symbol = "x"
+            board.markSquare(symbol, row, col)
+            console.warn = jest.fn(warn => {})
 
-        board.markSquare(symbol, row, col)
-        expect(board.grid[row][col]).toEqual(symbol)
+            expect(board.markSquare(symbol, row, col)).toEqual(false)
+            expect(console.warn).toBeCalledTimes(1)
+        })
+        test(`should warn if coordinates already has a "x" and return false`, () => {
+            const board = new Board(boardSize)
+            const row = 2
+            const col = 2
+            const symbol = "o"
+            board.markSquare(symbol, row, col)
+            console.warn = jest.fn(warn => {})
+
+            expect(board.markSquare(symbol, row, col)).toEqual(false)
+            expect(console.warn).toBeCalledTimes(1)
+        })
+        test(`should mark based on coordinates and return true`, () => {
+            const board = new Board(boardSize, 3)
+            const row = 1
+            const col = 1
+            const symbol = "x"
+    
+            expect(board.markSquare(symbol, row, col)).toEqual(true)
+            expect(board.grid[row][col]).toEqual(symbol)
+        })
     })
     test(`#print should print according to provided template`, () => {
         const board = new Board(boardSize, 3)
