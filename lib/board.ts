@@ -7,7 +7,7 @@ export interface IBoard {
 
     print(): void;
     create(boardSize: number): string[][]
-    markSquare(symbol: Mark, row: number, col: number): void;
+    markSquare(symbol: Mark, row: number, col: number): boolean;
     drawBreakLine(n: number): string
     maxGridNumber(): number
     valueFromCoordinates(row: number, col: number): string;
@@ -67,12 +67,17 @@ export class Board implements IBoard{
         return line
     }
 
-    markSquare(symbol: Mark, row: number, col: number) {
+    markSquare(symbol: Mark, row: number, col: number): boolean {
         if (row > this.boardSize || col < 0) {
-            console.warn("woops invalid coordinates")
-            return
+            console.warn("woops invalid number")
+            return false
+        }
+        if (this.grid[row][col] === "x" || this.grid[row][col] === "o") {
+            console.warn("woops already have value")
+            return false
         }
         this.grid[row][col] = symbol;
+        return true
     }
 
     /**
