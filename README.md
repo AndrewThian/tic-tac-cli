@@ -1,3 +1,16 @@
+## Usage ##
+
+1. `$ npm start`
+2. profit???
+
+## packages / dependencies ##
+
+1. `typescript`: for type-checking
+2. `husky`: git-hook management
+3. `jest` / `ts-jest`: testing and assertions
+4. `nodemon`: dev-tools
+5. `prettier`: code formatting
+
 ## tsconfig-paths ##
 
 > When providing a baseUrl for `tsconfig.json`, we are only providing a resolution for the compiler.
@@ -23,6 +36,7 @@ For example: horizontal search would search
 
 total searches: 9 in total
 
+In effect, the pattern doesn't remember any previous calls of `#checkWin` and will iterate over the provided win conditions anyway.
 Reason behind this is because I'm recreating a new `Set` everytime I call a check a specific line(in this case horizontal)
 
 A better implementation would be to store the `Set` and reuse it for every subsequent horizontal search so as to cache the number of coordinates "`seen`".
