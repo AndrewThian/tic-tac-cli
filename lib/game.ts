@@ -53,7 +53,8 @@ export class Game implements IGame {
         let horizontalCheck = this.horizontal(symbol, row, col, new Set());
         let verticalCheck = this.vertical(symbol, row, col, new Set())
         let frontSlashCheck = this.diagonalFront(symbol, row, col, new Set())
-        return horizontalCheck >= winCondition || verticalCheck >= winCondition || frontSlashCheck >= winCondition;
+        let backSlashCheck = this.diagonalBack(symbol, row, col, new Set())
+        return horizontalCheck >= winCondition || verticalCheck >= winCondition || frontSlashCheck >= winCondition || backSlashCheck >= winCondition
     }
 
     horizontal(
@@ -127,8 +128,25 @@ export class Game implements IGame {
         return counter;
     }
 
-    // diagonalBack(symbol: Mark, row: number, col: number, seen: Set<string>) {
-    //     const currentPosition = `${row}-${col}`
-    //     seen.add(currentPosition);
-    // }
+    diagonalBack(symbol: Mark, row: number, col: number, seen: Set<string>) {
+        const currentPosition = `${row}-${col}`
+        seen.add(currentPosition);
+        if (this.board.valueFromCoordinates(row, col) !== symbol) {
+            return 0
+        }
+        let counter = 1
+        let [upLeftRow, upLeftCol] = Traverse.upLeft(row, col);
+        let [downRightRow, downRightCol] = Traverse.downRight(row, col);
+        // check upLeft
+        if (upLeftRow >= 0 && upLeftCol >= 0 && !seen.has(`${upLeftRow}-${upLeftCol}`)) {
+            const upLeft = this.diagonalBack(symbol, upLeftRow, upLeftCol, seen);
+            counter += upLeft;
+        }
+        // check downRight
+        if (downRightRow < this.board.boardSize && downRightCol < this.board.boardSize && !seen.has(`${downRightRow}-${downRightCol}`)) {
+            const downRight = this.diagonalBack(symbol, downRightRow, downRightCol, seen);
+            counter += downRight;
+        }
+        return counter;
+    }
 }

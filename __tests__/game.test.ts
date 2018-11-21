@@ -53,7 +53,50 @@ describe("<Game> clas test suite", () => {
             expect(game.checkWin("x", 0, 0, winCondition)).toBeFalsy();
         });
     });
-    describe("#diagonalFront", () => {
+    describe("#diagonalBack check condiiton test scope", () => {
+        test("should traverse upRight and downLeft", () => {
+            const mockUpLeft = jest.spyOn(Traverse, "upLeft");
+            const mockDownRight = jest.spyOn(Traverse, "downRight");
+
+            const board = new Board(3)
+            board.markSquare("x", 1, 1)
+            const game = new Game(board)
+            game.diagonalBack("x", 1, 1, new Set())
+            
+            expect(mockUpLeft).toBeCalled();
+            expect(mockDownRight).toBeCalled();
+        })
+        describe("recursive test cases", () => {
+            test("should be called recursively 2x on 1 play", () => {
+                const board = new Board(boardSize);
+                const game = new Game(board);
+                const mock = jest.spyOn(game, "diagonalBack");
+                game.play(1, "x")
+
+                expect(mock).toBeCalledTimes(2);
+            })
+            test("should be called recursively 5x on 2 play", () => {
+                const board = new Board(boardSize);
+                const game = new Game(board);
+                const mock = jest.spyOn(game, "diagonalBack");
+                game.play(1, "x")
+                game.play(5, "x")
+
+                expect(mock).toBeCalledTimes(5);
+            })
+            test("should be called recursively 8x on 2 play", () => {
+                const board = new Board(boardSize);
+                const game = new Game(board);
+                const mock = jest.spyOn(game, "diagonalBack");
+                game.play(1, "x")
+                game.play(5, "x")
+                game.play(9, "x")
+
+                expect(mock).toBeCalledTimes(8);
+            })
+        })
+    })
+    describe("#diagonalFront check condiiton test scope", () => {
         test("should traverse upRight and downLeft", () => {
             const mockUpRight = jest.spyOn(Traverse, "upRight");
             const mockDownLeft = jest.spyOn(Traverse, "downLeft");
@@ -96,7 +139,7 @@ describe("<Game> clas test suite", () => {
             })
         })
     })
-    describe("#vertical" , () => {
+    describe("#vertical check condiiton test scope" , () => {
         test("should traverse up and down", () => {
             const mockUp = jest.spyOn(Traverse, "up");
             const mockDown = jest.spyOn(Traverse, "down");
@@ -138,7 +181,7 @@ describe("<Game> clas test suite", () => {
             })
         })
     })
-    describe("#horizontal", () => {
+    describe("#horizontal check condiiton test scope", () => {
         test("should traverse left and right", () => {
             const mockLeft = jest.spyOn(Traverse, "left");
             const mockRight = jest.spyOn(Traverse, "right");
