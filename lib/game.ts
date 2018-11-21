@@ -35,6 +35,9 @@ export class Game implements IGame {
             return "invalid";
         }
         this.board.print();
+        if (this.board.isCompleted()) {
+            return "draw"
+        }
         if (this.checkWin(symbol, row, col, this.board.winCondition)) {
             return "win";
         }
@@ -48,7 +51,8 @@ export class Game implements IGame {
         winCondition: number
     ): boolean {
         let horizontalCheck = this.horizontal(symbol, row, col, new Set());
-        return horizontalCheck >= winCondition;
+        let verticalCheck = this.vertical(symbol, row, col, new Set())
+        return horizontalCheck >= winCondition || verticalCheck >= winCondition;
     }
 
     horizontal(
@@ -78,7 +82,25 @@ export class Game implements IGame {
         return counter;
     }
 
-    // vertical(symbol: Mark, row: number, col: number, seen: Set<string>) {
-    //     const this
-    // }
+    vertical(symbol: Mark, row: number, col: number, seen: Set<string>) {
+        const currentPosition = `${row}-${col}`
+        seen.add(currentPosition);
+        if (this.board.valueFromCoordinates(row, col) !== symbol) {
+            return 0
+        }
+        let counter = 1;
+        let [upRow, upCol] = Traverse.up(row, col);
+        let [downRow, downCol] = Traverse.down(row, col);
+        // check up
+        if (upRow >= 0 && !seen.has(`${upRow}-${upCol}`)) {
+            const up = this.vertical(symbol, upRow, upCol, seen)
+            counter += up
+        }
+        // check down
+        if (downRow < this.board.boardSize && !seen.has(`${downRow}-${downCol}`)) {
+            const down = this.vertical(symbol, downRow, downCol, seen)
+            counter += down
+        }
+        return counter;
+    }
 }

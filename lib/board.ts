@@ -1,7 +1,7 @@
 import { Mark } from "./player";
 
 export interface IBoard {
-    grid: string[][];
+    readonly grid: string[][];
     readonly boardSize: number;
     readonly winCondition: number;
 
@@ -10,16 +10,19 @@ export interface IBoard {
     markSquare(symbol: Mark, row: number, col: number): boolean;
     drawBreakLine(n: number): string;
     maxGridNumber(): number;
+    isCompleted(): boolean;
     valueFromCoordinates(row: number, col: number): string;
     convertInputToCoordinates(inputNumber: number): [number, number];
 }
 
 export class Board implements IBoard {
+    count: number
     readonly grid: string[][];
     readonly boardSize: number;
     readonly winCondition: number;
 
     constructor(boardSize: number, winCondition: number = 3) {
+        this.count = 0
         this.boardSize = boardSize;
         this.winCondition = winCondition;
 
@@ -77,7 +80,12 @@ export class Board implements IBoard {
             return false;
         }
         this.grid[row][col] = symbol;
+        this.count += 1
         return true;
+    }
+
+    isCompleted() {
+        return this.maxGridNumber() === this.count
     }
 
     /**
@@ -95,7 +103,6 @@ export class Board implements IBoard {
     }
 
     convertInputToCoordinates(inputNumber: number): [number, number] {
-        // normalize number to array index numerical order
         if (inputNumber > this.maxGridNumber()) {
             console.warn("woops, invalid board number");
             return [ -1, -1 ]

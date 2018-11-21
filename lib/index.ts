@@ -122,7 +122,12 @@ _event.on("turn", ({ gameState, game, value }: PlayerTurnData) => {
             questionPlayer(gameState);
             break;
         }
+        case "draw": {
+            console.log("DRAW")
+            rl.close()
+        }
         case "win": {
+            console.log("WIN")
             rl.close();
             break;
         }

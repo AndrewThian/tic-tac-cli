@@ -53,6 +53,48 @@ describe("<Game> clas test suite", () => {
             expect(game.checkWin("x", 0, 0, winCondition)).toBeFalsy();
         });
     });
+    describe("#vertical" , () => {
+        test("should traverse up and down", () => {
+            const mockUp = jest.spyOn(Traverse, "up");
+            const mockDown = jest.spyOn(Traverse, "down");
+            const board = new Board(3)
+            board.markSquare("x", 1, 1)
+            const game = new Game(board)
+            game.vertical("x", 1, 1, new Set())
+            
+            expect(mockUp).toBeCalled();
+            expect(mockDown).toBeCalled();
+        })
+        describe.only("recursive test cases", () => {
+            test("should be called recursively 2x on 1 play", () => {
+                const board = new Board(boardSize);
+                const game = new Game(board);
+                const mock = jest.spyOn(game, "vertical");
+                game.play(1, "x")
+
+                expect(mock).toBeCalledTimes(2);
+            })
+            test("should be called recursively 5x on 2 play", () => {
+                const board = new Board(boardSize);
+                const game = new Game(board);
+                const mock = jest.spyOn(game, "vertical");
+                game.play(1, "x")
+                game.play(4, "x")
+
+                expect(mock).toBeCalledTimes(5);
+            })
+            test("should be called recursively 9x on 3 play", () => {
+                const board = new Board(boardSize);
+                const game = new Game(board);
+                const mock = jest.spyOn(game, "vertical");
+                game.play(3, "x")
+                game.play(6, "x")
+                game.play(9, "x")
+
+                expect(mock).toBeCalledTimes(8);
+            })
+        })
+    })
     describe("#horizontal", () => {
         test("should traverse left and right", () => {
             const mockLeft = jest.spyOn(Traverse, "left");
@@ -108,6 +150,7 @@ describe("#play Should call <Board> class methods", () => {
                     valueFromCoordinates: jest.fn(() => ""),
                     maxGridNumber: jest.fn(() => boardSize * boardSize),
                     convertInputToCoordinates: jest.fn(() => [0, 0]),
+                    isCompleted: jest.fn(() => false),
                     markSquare: jest.fn(() => true),
                     print: jest.fn(() => {}),
                 };
@@ -134,6 +177,9 @@ describe("#play Should call <Board> class methods", () => {
     test("#play calls #board.print", () => {
         expect(board.print).toBeCalledTimes(1);
     });
+    test("#play calls #board.isCompleted", () => {
+        expect(board.isCompleted).toBeCalledTimes(1);
+    });
 });
 
 describe("#play error handling and return values", () => {
@@ -147,6 +193,13 @@ describe("#play error handling and return values", () => {
 
         expect(game.play(1, "x")).toEqual("invalid")
     });
+    test("should return draw if board is completed", () => {
+        const board = new Board(3);
+        board.isCompleted = jest.fn(() => true)
+        const game = new Game(board);
+
+        expect(game.play(1, "x")).toEqual("draw")
+    })
     test("Scenario 1: invalid' game state from #maxGridNumber", () => {
         const board = new Board(3);
         board.maxGridNumber = jest.fn(() => 9)
