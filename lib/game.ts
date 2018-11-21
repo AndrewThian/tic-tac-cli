@@ -2,9 +2,11 @@ import { IBoard } from "./board";
 import { Mark } from "./player";
 import { Traverse } from "./traverse";
 
+type GameStatus = "invalid" | "win" | "next" | "draw"
+
 export interface IGame {
     readonly board: IBoard
-    play(inputNumber: number, symbol: Mark): boolean
+    play(inputNumber: number, symbol: Mark): GameStatus
     checkWin(symbol: Mark, row: number, col: number, winCondition: number): boolean
 }
 
@@ -15,27 +17,23 @@ export class Game implements IGame {
         this.board = board
     }
 
-    play(inputNumber: number, symbol: Mark): boolean {
-
+    play(inputNumber: number, symbol: Mark): GameStatus {
         if (inputNumber > this.board.maxGridNumber()) {
             console.warn("woops, invalid board number")
-            return
+            return "invalid"
         }
-        // convert inputNumber to coordinates
         let [ row, col ] = this.board.convertInputToCoordinates(inputNumber);
-        // mark square
-        this.board.markSquare(symbol, row, col);
-        // print board
+        if (!this.board.markSquare(symbol, row, col)) {
+            return "invalid"
+        }
         this.board.print();
         if (this.checkWin(symbol, row, col, this.board.winCondition)) {
-            console.log("win")
-            return true
+            return "win"
         }
-        return false
+        return "next"
     }
 
     checkWin(symbol: Mark, row: number, col: number, winCondition: number): boolean {
-        console.log("GOING INTO FIRST CALL")
         let horizontalCheck = this.horizontal(symbol, row, col, new Set())
         return horizontalCheck >= winCondition
     }
@@ -51,15 +49,12 @@ export class Game implements IGame {
         let [leftRow, leftCol] = Traverse.left(row, col)
         let [rightRow, rightCol] = Traverse.right(row, col)
         // check left
-        console.log(seen)
         if (leftCol >= 0 && !seen.has(`${leftRow}-${leftCol}`)) {
-            console.log("LEFT")
             const left = self.horizontal(symbol, leftRow, leftCol, seen)
             counter += left;
         }
         // check right
         if (rightCol >= 0 && !seen.has(`${rightRow}-${rightCol}`)) {
-            console.log("RIGHT")
             const right = self.horizontal(symbol, rightRow, rightCol, seen)
             counter += right
         }
