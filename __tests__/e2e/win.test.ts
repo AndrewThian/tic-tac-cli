@@ -1,7 +1,7 @@
 import { Game } from "../../lib/game";
 import { Board } from "../../lib/board";
 
-describe("e2e gameplay test suite", () => {
+describe("e2e gameplay win test suite", () => {
     describe("horizontal win conditions", () => {
         beforeEach(() => {
             console.log = jest.fn(() => {});
@@ -9,47 +9,61 @@ describe("e2e gameplay test suite", () => {
         afterEach(() => {
             jest.clearAllMocks();
         });
-        test("horizontal game win condition 3x3", () => {
+        test("game win condition 3x3", () => {
             const board = new Board(3);
             const game = new Game(board);
-            const symbols: any = ["x", "o"];
-            const gameloop = [1, 4, 2, 7, 3];
     
-            gameloop.map((loop, index) => {
-                if (index === gameloop.length - 1) {
-                    expect(game.play(loop, symbols[index % 2])).toEqual("win")
-                } else {
-                    game.play(loop, symbols[index % 2]);
-                }
-            });
+            game.play(1, "x")
+            game.play(2, "x")
+            expect(game.play(3, "x")).toEqual("win")
         });
-        test("horizontal game win condition 4x4", () => {
+        test("game win condition 4x4", () => {
             const board = new Board(4);
             const game = new Game(board);
-            const symbols: any = ["x", "o"];
-            const gameloop = [1, 4, 10, 5, 11, 7, 12];
-    
-            gameloop.map((loop, index) => {
-                if (index === gameloop.length - 1) {
-                    expect(game.play(loop, symbols[index % 2])).toEqual("win")
-                } else {
-                    game.play(loop, symbols[index % 2]);
-                }
-            });
+            
+            game.play(5, "x")
+            game.play(6, "x")
+            expect(game.play(7, "x")).toEqual("win")
         });
-        test("horizontal game win condition 5x5", () => {
+        test("game win condition 5x5", () => {
+            const board = new Board(5);
+            const game = new Game(board);            
+            
+            game.play(18, "x")
+            game.play(19, "x")
+            expect(game.play(20, "x")).toEqual("win")
+        });
+    })
+    describe("vertical win conditions", () => {
+        beforeEach(() => {
+            console.log = jest.fn(() => {});
+        });
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+        test("game win condition 3x3", () => {
+            const board = new Board(3);
+            const game = new Game(board);
+    
+            game.play(3, "x")
+            game.play(6, "x")
+            expect(game.play(9, "x")).toEqual("win")
+        });
+        test("game win condition 4x4", () => {
             const board = new Board(4);
             const game = new Game(board);
-            const symbols: any = ["x", "o"];
-            const gameloop = [1, 4, 10, 5, 11, 14, 18, 15, 2, 16];
     
-            gameloop.map((loop, index) => {
-                if (index === gameloop.length - 1) {
-                    expect(game.play(loop, symbols[index % 2])).toEqual("win")
-                } else {
-                    game.play(loop, symbols[index % 2]);
-                }
-            });
+            game.play(7, "x")
+            game.play(11, "x")
+            expect(game.play(15, "x")).toEqual("win")
+        });
+        test("game win condition 5x5", () => {
+            const board = new Board(5);
+            const game = new Game(board);
+
+            game.play(15, "x")
+            game.play(20, "x")
+            expect(game.play(25, "x")).toEqual("win")
         });
     })
 });
