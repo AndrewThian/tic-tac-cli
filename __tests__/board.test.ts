@@ -96,6 +96,17 @@ describe("Board testsuite", () => {
             expect(board.markSquare(symbol, row, col)).toEqual(true);
             expect(board.grid[row][col]).toEqual(symbol);
         });
+        test("should add to count", () => {
+            const board = new Board(boardSize, 3);
+            const row = 1;
+            const col = 1;
+            const symbol = "x";
+
+            board.markSquare(symbol, row, col)
+            board.markSquare(symbol, row -1, col)
+
+            expect(board.count).toEqual(2)
+        })
     });
     test(`#print should print according to provided template`, () => {
         const board = new Board(boardSize, 3);
@@ -117,4 +128,22 @@ describe("Board testsuite", () => {
 
         expect(value).toEqual("x");
     });
+    test("#isCompleted should return true if board completed", () => {
+        const board = new Board(boardSize, 3);
+        const symbol = "x";
+        // first row
+        board.markSquare(symbol, 0, 0)
+        board.markSquare(symbol, 0, 1)
+        board.markSquare(symbol, 0, 2)
+        // second row
+        board.markSquare(symbol, 1, 0)
+        board.markSquare(symbol, 1, 1)
+        board.markSquare(symbol, 1, 2)
+        // third row
+        board.markSquare(symbol, 2, 0)
+        board.markSquare(symbol, 2, 1)
+        board.markSquare(symbol, 2, 2)
+
+        expect(board.isCompleted()).toEqual(true)
+    })
 });
