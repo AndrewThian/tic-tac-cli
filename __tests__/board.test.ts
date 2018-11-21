@@ -110,11 +110,9 @@ describe("Board testsuite", () => {
     });
     test(`#print should print according to provided template`, () => {
         const board = new Board(boardSize, 3);
-        const template = ` 1 | 2 | 3 \n${line} 4 | 5 | 6 \n${line} 7 | 8 | 9 \n`;
         console.log = jest.fn(log => {
             // @ts-ignore
             expect(log).toBeType("string");
-            expect(log).toEqual(template);
         });
 
         board.print();
