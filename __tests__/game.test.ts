@@ -120,17 +120,25 @@ describe("<Game> clas test suite", () => {
             afterEach(() => {
                 jest.clearAllMocks();
             })
-            test("#play should call #board.convertInputToCoordinates", () => {
+            test("#play calls #board.convertInputToCoordinates", () => {
                 expect(board.convertInputToCoordinates).toBeCalledTimes(1)
             })
-            test("#play should call #board.maxGridNumber", () => {
+            test("#play calls #board.maxGridNumber", () => {
                 expect(board.maxGridNumber).toBeCalledTimes(1)
             })
-            test("#play should call #board.markSquare", () => {
+            test("#play calls #board.markSquare", () => {
                 expect(board.markSquare).toBeCalledTimes(1)
             })
-            test("#play should call #board.print", () => {
+            test("#play calls #board.print", () => {
                 expect(board.print).toBeCalledTimes(1)
+            })
+        })
+        describe("Error handling and return values", () => {
+            test("should warn with invalid board number and return 'invalid' game state", () => {
+                
+            })
+            test("should return invalid if board does not markSquare", () => {
+
             })
         })
     })
