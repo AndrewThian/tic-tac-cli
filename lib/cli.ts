@@ -41,7 +41,6 @@ export class CLI extends EventEmitter implements ICLI {
     }
 
     getPlayerData() {
-        console.log("called");
         this.rl.question("Enter name of player 1 \n>> ", (p1name: string) => {
             const p1 = new Player(1, p1name);
             console.log(`Welcome ${p1.name}, symbol: ${p1.symbol}`);
@@ -64,15 +63,19 @@ export class CLI extends EventEmitter implements ICLI {
                 this.rl.close();
                 return;
             }
+            console.log(
+                "\n💩 Setting default win condition to 3.\nIt's possible to change it, but it's completely untested.\n"
+            );
             const board = new Board(n);
             const game = new Game(board);
+
             const state = new State(p1, p2);
 
             console.log("\n");
             board.print();
             console.log("\n");
 
-            this.emit("new game", { p1, p2, game, state });
+            this.emit("new game", { game, state });
         });
     }
 
@@ -93,7 +96,7 @@ export class CLI extends EventEmitter implements ICLI {
                 this.rl.close();
             }
             case "win": {
-                console.log(`Congrats! ${currentPlayer.name}! You've won.`);
+                console.log(`Congrats! 🍕 ${currentPlayer.name}! You've won.`);
                 this.rl.close();
                 break;
             }

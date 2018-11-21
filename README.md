@@ -1,7 +1,15 @@
+## Intro ##
+
+Welcome to tic-tac-cli, it's an over-engineered solution to command line tic tac toe. Instead of hardcoding the win conditions,
+I decided to implement sort of a recursive pattern to traverse the 2D array and check conditions based on the direction. Which means, not matter how large the board is, as long as you connect 3, you'll win. Yes I know, if you start first you'll always win. But who cares. I do, I care.
+
 ## Usage ##
 
 1. `$ npm start`
 2. profit???
+
+1. `$ npm test`
+2. coverage???
 
 ## packages / dependencies ##
 
@@ -10,6 +18,35 @@
 3. `jest` / `ts-jest`: testing and assertions
 4. `nodemon`: dev-tools
 5. `prettier`: code formatting
+
+## directory structure ##
+
+```
+.
+├── README.md
+├── __tests__ // test suite
+│   ├── board.test.ts
+│   ├── e2e
+│   │   ├── draw.test.ts
+│   │   └── win.test.ts
+│   ├── game.test.ts
+│   ├── player.test.ts
+│   └── traverse.test.ts
+├── jest.config.js 
+├── lib // main directory
+│   ├── board.ts // class Board {} -> incharged of any domain regarding the tic-tac board
+│   ├── cli.ts // class CLI {} -> handles all user input from command line and intergrates with other classes
+│   ├── game.ts // class Game {} -> a "wrapper" over board to provide win condition checks
+│   ├── index.ts // entry point
+│   ├── player.ts // class Player {} -> holds the player's data
+│   ├── state.ts // class State {} -> manages the game state and which player is currently playing
+│   └── traverse.ts // module Traverse -> handles all logic for traversal direction
+├── package-lock.json
+├── package.json
+├── prototype.js
+├── setupTests.js // setting up jest tests for extending assertion library
+└── tsconfig.json
+```
 
 ## tsconfig-paths ##
 
