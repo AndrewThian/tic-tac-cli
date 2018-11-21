@@ -96,6 +96,10 @@ export class Board implements IBoard {
 
     convertInputToCoordinates(inputNumber: number): [number, number] {
         // normalize number to array index numerical order
+        if (inputNumber > this.maxGridNumber()) {
+            console.warn("woops, invalid board number");
+            return [ -1, -1 ]
+        }
         const arrayNumber = inputNumber - 1;
         const row = Math.floor(arrayNumber / this.boardSize);
         const col = arrayNumber % this.boardSize;

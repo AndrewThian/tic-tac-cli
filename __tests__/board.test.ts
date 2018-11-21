@@ -4,7 +4,6 @@ describe("Board testsuite", () => {
     const boardSize = 3;
     const numberOfDashes = boardSize * 3 + (boardSize - 1);
     const line = "-----------\n";
-    const inputNumber = 10;
     test("Should create board on initialization", () => {
         const board = new Board(boardSize, 3);
 
@@ -36,6 +35,7 @@ describe("Board testsuite", () => {
         expect(board.maxGridNumber()).toEqual(boardSize * boardSize);
     });
     test(`#convertInputToCoordinates to return coordinates from inputNumber`, () => {
+        const inputNumber = 9;
         const board = new Board(boardSize, 3);
         const arrNo = inputNumber - 1;
         const controlRow = Math.floor(arrNo / boardSize);
@@ -44,6 +44,13 @@ describe("Board testsuite", () => {
         expect(row).toEqual(controlRow);
         expect(col).toEqual(controlCol);
     });
+    test(`#convertInputToCoordinates to warn and return negative coordinates if invalid`, () => {
+        const invalidInputNumber = 1000
+        const board = new Board(boardSize, 3);
+        const [row, col] = board.convertInputToCoordinates(invalidInputNumber);
+        expect(row).toEqual(-1);
+        expect(col).toEqual(-1);
+    })
     describe("#markSquare test scope", () => {
         afterEach(() => {
             jest.clearAllMocks();

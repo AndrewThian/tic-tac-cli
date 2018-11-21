@@ -28,6 +28,9 @@ export class Game implements IGame {
             return "invalid";
         }
         let [row, col] = this.board.convertInputToCoordinates(inputNumber);
+        if (row < 0 || col < 0) {
+            return "invalid"
+        }
         if (!this.board.markSquare(symbol, row, col)) {
             return "invalid";
         }
@@ -54,10 +57,9 @@ export class Game implements IGame {
         col: number,
         seen: Set<string>
     ): number {
-        const self = this;
         const currentPosition = `${row}-${col}`;
         seen.add(currentPosition);
-        if (self.board.valueFromCoordinates(row, col) !== symbol) {
+        if (this.board.valueFromCoordinates(row, col) !== symbol) {
             return 0;
         }
         let counter = 1;
@@ -65,14 +67,18 @@ export class Game implements IGame {
         let [rightRow, rightCol] = Traverse.right(row, col);
         // check left
         if (leftCol >= 0 && !seen.has(`${leftRow}-${leftCol}`)) {
-            const left = self.horizontal(symbol, leftRow, leftCol, seen);
+            const left = this.horizontal(symbol, leftRow, leftCol, seen);
             counter += left;
         }
         // check right
         if (rightCol >= 0 && !seen.has(`${rightRow}-${rightCol}`)) {
-            const right = self.horizontal(symbol, rightRow, rightCol, seen);
+            const right = this.horizontal(symbol, rightRow, rightCol, seen);
             counter += right;
         }
         return counter;
     }
+
+    // vertical(symbol: Mark, row: number, col: number, seen: Set<string>) {
+    //     const this
+    // }
 }

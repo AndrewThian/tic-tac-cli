@@ -2,8 +2,9 @@ import { Game } from "../lib/game";
 import { Board } from "../lib/board";
 import { Traverse } from "../lib/traverse";
 
+const boardSize = 3;
+
 describe("<Game> clas test suite", () => {
-    const boardSize = 3;
     test("initialize with Board", () => {
         const board = new Board(boardSize, 3);
         const game = new Game(board);
@@ -94,48 +95,76 @@ describe("<Game> clas test suite", () => {
             });
         });
     });
-    describe("#play test scope", () => {
-        describe("Should call <Board> class methods", () => {
-            let MockedBoard: any;
-            let board: any;
-            let game: Game;
-            beforeEach(() => {
-                jest.mock("../lib/board", () => {
-                    return function() {
-                        return {
-                            valueFromCoordinates: jest.fn(() => ""),
-                            maxGridNumber: jest.fn(() => boardSize * boardSize),
-                            convertInputToCoordinates: jest.fn(() => [0, 0]),
-                            markSquare: jest.fn(() => {}),
-                            print: jest.fn(() => {}),
-                        };
-                    };
-                });
-                MockedBoard = require("../lib/board");
-                board = new MockedBoard();
-                game = new Game(board);
+});
 
-                game.play(1, "x");
-            });
-            afterEach(() => {
-                jest.clearAllMocks();
-            });
-            test("#play calls #board.convertInputToCoordinates", () => {
-                expect(board.convertInputToCoordinates).toBeCalledTimes(1);
-            });
-            test("#play calls #board.maxGridNumber", () => {
-                expect(board.maxGridNumber).toBeCalledTimes(1);
-            });
-            test("#play calls #board.markSquare", () => {
-                expect(board.markSquare).toBeCalledTimes(1);
-            });
-            test("#play calls #board.print", () => {
-                expect(board.print).toBeCalledTimes(1);
-            });
+describe("#play Should call <Board> class methods", () => {
+    let MockedBoard: any;
+    let board: any;
+    let game: Game;
+    beforeEach(() => {
+        jest.mock("../lib/board", () => {
+            return function() {
+                return {
+                    valueFromCoordinates: jest.fn(() => ""),
+                    maxGridNumber: jest.fn(() => boardSize * boardSize),
+                    convertInputToCoordinates: jest.fn(() => [0, 0]),
+                    markSquare: jest.fn(() => true),
+                    print: jest.fn(() => {}),
+                };
+            };
         });
-        describe("Error handling and return values", () => {
-            test("should warn with invalid board number and return 'invalid' game state", () => {});
-            test("should return invalid if board does not markSquare", () => {});
-        });
+        MockedBoard = require("../lib/board");
+        board = new MockedBoard();
+        game = new Game(board);
+
+        game.play(1, "x")
     });
+    afterEach(() => {
+        jest.unmock("../lib/board")
+    });
+    test("#play calls #board.convertInputToCoordinates", () => {
+        expect(board.convertInputToCoordinates).toBeCalledTimes(1);
+    });
+    test("#play calls #board.maxGridNumber", () => {
+        expect(board.maxGridNumber).toBeCalledTimes(1);
+    });
+    test("#play calls #board.markSquare", () => {
+        expect(board.markSquare).toBeCalledTimes(1);
+    });
+    test("#play calls #board.print", () => {
+        expect(board.print).toBeCalledTimes(1);
+    });
+});
+
+describe("#play error handling and return values", () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    })
+    test("should return invalid if board does not markSquare", () => {
+        const board = new Board(3);
+        board.markSquare = jest.fn(() => false)
+        const game = new Game(board);
+
+        expect(game.play(1, "x")).toEqual("invalid")
+    });
+    test("Scenario 1: invalid' game state from #maxGridNumber", () => {
+        const board = new Board(3);
+        board.maxGridNumber = jest.fn(() => 9)
+        const game = new Game(board);
+
+        expect(game.play(10, "x")).toEqual("invalid")
+        console.warn = jest.fn(value => {
+            expect(value).toEqual("woops, invalid board number");
+        })
+    });
+    test("Scenario 2: invalid' game state from #convertInputToCoordinates", () => {
+        const board = new Board(3);
+        board.convertInputToCoordinates = jest.fn(() => [ -1, -1 ])
+        const game = new Game(board);
+
+        expect(game.play(10, "x")).toEqual("invalid")
+        console.warn = jest.fn(value => {
+            expect(value).toEqual("woops, invalid board number");
+        })
+    })
 });
