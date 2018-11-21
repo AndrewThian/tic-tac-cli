@@ -3,7 +3,7 @@ import { Mark } from "./player";
 export interface IBoard {
     readonly grid: string[][];
     readonly boardSize: number;
-    readonly winCondition: number;
+    winCondition: number;
 
     print(): void;
     create(boardSize: number): string[][];
@@ -52,7 +52,9 @@ export class Board implements IBoard {
         }, []);
 
         const line = this.drawBreakLine(this.boardSize);
+        console.log("\n");
         console.log(printable.join(line));
+        console.log("\n");
     }
 
     /**
