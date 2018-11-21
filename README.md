@@ -14,7 +14,7 @@ I decided to implement sort of a recursive pattern to traverse the 2D array and 
 ## packages / dependencies ##
 
 1. `typescript`: for type-checking
-2. `husky`: git-hook management
+2. `husky`: git-hook management (pre-commit linting and pre-push run tests)
 3. `jest` / `ts-jest`: testing and assertions
 4. `nodemon`: dev-tools
 5. `prettier`: code formatting
