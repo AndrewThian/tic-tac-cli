@@ -2,6 +2,7 @@ import readline from "readline";
 import EventEmitter from "events";
 import { Player } from "./player";
 import { Board, IBoard } from "./board";
+import { Game } from "./game";
 
 const _event = new EventEmitter();
 const rlConfig = { 
@@ -18,6 +19,7 @@ interface GameData {
     p1: Player
     p2: Player
     board: IBoard
+    game: Game
 }
 
 const setPlayers = () => {
@@ -31,8 +33,9 @@ const setPlayers = () => {
             rl.prompt();
             rl.question("Enter board size \n>> ", (size: string) => {
                 const board = new Board(parseInt(size, 10))
+                const game = new Game(board)
                 _event.emit("start", {
-                    p1, p2, board
+                    p1, p2, board, game
                 })
             })
         })
@@ -70,18 +73,15 @@ const questionPlayer = (gameState: State) => {
     rl.prompt();
 }
 
-_event.on("start", ({ p1, p2, board }: GameData) => {
+_event.on("start", ({ p1, p2, game, board }: GameData) => {
     board.print();
 
     const gameState = new State(p1, p2);
-
-    // rl.setPrompt(`${gameState.currentPlayer().name}, choose a box to place an '${gameState.currentPlayer().symbol}' \n >> `)
-    // rl.prompt();
     questionPlayer(gameState)
 
     rl.on("line", (value: string) => {
         if (value.match(/^[0-9]+$/)) {
-            _event.emit("turn", { gameState, board, value })
+            _event.emit("turn", { gameState, board, game, value })
         } else if (value === "exit") {
             rl.close();
         }
@@ -93,34 +93,28 @@ _event.on("start", ({ p1, p2, board }: GameData) => {
 interface PlayerTurnData {
     gameState: State
     board: Board
+    game: Game
     value: string
 }
 
-_event.on("turn", ({ gameState, board, value }: PlayerTurnData) => {
-    // mark square on board
+_event.on("turn", ({ gameState, game, value }: PlayerTurnData) => {
     const inputNumber = parseInt(value)
-    if (inputNumber > board.maxGridNumber()) {
-        console.log("woops, invalid number");
-        questionPlayer(gameState);
-        return
-    }
     const currentPlayer = gameState.currentPlayer()
-    const [ row, col ] = board.convertInputToCoordinates(inputNumber)
-    board.markSquare(currentPlayer.symbol, row, col)
-
-    // print board
-    board.print();
-    // check win
-    // go next turn
-
-    // board.print();
-    // do logic of current user turn
-    // then call next turn
-    gameState.nextTurn();
-    // const currentPlayer = gameState.currentPlayer()
-    // rl.setPrompt(`${currentPlayer.name}, choose a box to place an '${currentPlayer.symbol}' \n >> `)
-    // rl.prompt();
-    questionPlayer(gameState)
+    switch(game.play(inputNumber, currentPlayer.symbol)) {
+        case "next": {
+            gameState.nextTurn();
+            questionPlayer(gameState);
+            break;
+        }
+        case "invalid": {
+            questionPlayer(gameState);
+            break;
+        }
+        case "win": {
+            rl.close();
+            break;
+        }
+    }
 })
 
 setPlayers()
