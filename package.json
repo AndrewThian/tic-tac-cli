@@ -8,7 +8,8 @@
     "watch": "nodemon --watch 'lib/**/*.ts' --exec 'ts-node -r tsconfig-paths/register' lib/index.ts",
     "type-check": "tsc --noEmit",
     "prettify": "prettier --write --config ./.prettierrc '{lib,__tests__}/**/*.ts'",
-    "build": "tsc"
+    "build": "tsc",
+    "start": "npm run build && node ./dist/index.js"
   },
   "repository": {
     "type": "git",
