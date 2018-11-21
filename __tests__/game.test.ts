@@ -58,129 +58,129 @@ describe("<Game> clas test suite", () => {
             const mockUpLeft = jest.spyOn(Traverse, "upLeft");
             const mockDownRight = jest.spyOn(Traverse, "downRight");
 
-            const board = new Board(3)
-            board.markSquare("x", 1, 1)
-            const game = new Game(board)
-            game.diagonalBack("x", 1, 1, new Set())
-            
+            const board = new Board(3);
+            board.markSquare("x", 1, 1);
+            const game = new Game(board);
+            game.diagonalBack("x", 1, 1, new Set());
+
             expect(mockUpLeft).toBeCalled();
             expect(mockDownRight).toBeCalled();
-        })
+        });
         describe("recursive test cases", () => {
             test("should be called recursively 2x on 1 play", () => {
                 const board = new Board(boardSize);
                 const game = new Game(board);
                 const mock = jest.spyOn(game, "diagonalBack");
-                game.play(1, "x")
+                game.play(1, "x");
 
                 expect(mock).toBeCalledTimes(2);
-            })
+            });
             test("should be called recursively 5x on 2 play", () => {
                 const board = new Board(boardSize);
                 const game = new Game(board);
                 const mock = jest.spyOn(game, "diagonalBack");
-                game.play(1, "x")
-                game.play(5, "x")
+                game.play(1, "x");
+                game.play(5, "x");
 
                 expect(mock).toBeCalledTimes(5);
-            })
+            });
             test("should be called recursively 8x on 2 play", () => {
                 const board = new Board(boardSize);
                 const game = new Game(board);
                 const mock = jest.spyOn(game, "diagonalBack");
-                game.play(1, "x")
-                game.play(5, "x")
-                game.play(9, "x")
+                game.play(1, "x");
+                game.play(5, "x");
+                game.play(9, "x");
 
                 expect(mock).toBeCalledTimes(8);
-            })
-        })
-    })
+            });
+        });
+    });
     describe("#diagonalFront check condiiton test scope", () => {
         test("should traverse upRight and downLeft", () => {
             const mockUpRight = jest.spyOn(Traverse, "upRight");
             const mockDownLeft = jest.spyOn(Traverse, "downLeft");
 
-            const board = new Board(3)
-            board.markSquare("x", 1, 1)
-            const game = new Game(board)
-            game.diagonalFront("x", 1, 1, new Set())
-            
+            const board = new Board(3);
+            board.markSquare("x", 1, 1);
+            const game = new Game(board);
+            game.diagonalFront("x", 1, 1, new Set());
+
             expect(mockUpRight).toBeCalled();
             expect(mockDownLeft).toBeCalled();
-        })
+        });
         describe("recursive test cases", () => {
             test("should be called recursively 2x on 1 play", () => {
                 const board = new Board(boardSize);
                 const game = new Game(board);
                 const mock = jest.spyOn(game, "diagonalFront");
-                game.play(3, "x")
+                game.play(3, "x");
 
                 expect(mock).toBeCalledTimes(2);
-            })
+            });
             test("should be called recursively 5x on 2 play", () => {
                 const board = new Board(boardSize);
                 const game = new Game(board);
                 const mock = jest.spyOn(game, "diagonalFront");
-                game.play(3, "x")
-                game.play(5, "x")
+                game.play(3, "x");
+                game.play(5, "x");
 
                 expect(mock).toBeCalledTimes(5);
-            })
+            });
             test("should be called recursively 8x on 2 play", () => {
                 const board = new Board(boardSize);
                 const game = new Game(board);
                 const mock = jest.spyOn(game, "diagonalFront");
-                game.play(3, "x")
-                game.play(5, "x")
-                game.play(7, "x")
+                game.play(3, "x");
+                game.play(5, "x");
+                game.play(7, "x");
 
                 expect(mock).toBeCalledTimes(8);
-            })
-        })
-    })
-    describe("#vertical check condiiton test scope" , () => {
+            });
+        });
+    });
+    describe("#vertical check condiiton test scope", () => {
         test("should traverse up and down", () => {
             const mockUp = jest.spyOn(Traverse, "up");
             const mockDown = jest.spyOn(Traverse, "down");
-            const board = new Board(3)
-            board.markSquare("x", 1, 1)
-            const game = new Game(board)
-            game.vertical("x", 1, 1, new Set())
-            
+            const board = new Board(3);
+            board.markSquare("x", 1, 1);
+            const game = new Game(board);
+            game.vertical("x", 1, 1, new Set());
+
             expect(mockUp).toBeCalled();
             expect(mockDown).toBeCalled();
-        })
+        });
         describe("recursive test cases", () => {
             test("should be called recursively 2x on 1 play", () => {
                 const board = new Board(boardSize);
                 const game = new Game(board);
                 const mock = jest.spyOn(game, "vertical");
-                game.play(1, "x")
+                game.play(1, "x");
 
                 expect(mock).toBeCalledTimes(2);
-            })
+            });
             test("should be called recursively 5x on 2 play", () => {
                 const board = new Board(boardSize);
                 const game = new Game(board);
                 const mock = jest.spyOn(game, "vertical");
-                game.play(1, "x")
-                game.play(4, "x")
+                game.play(1, "x");
+                game.play(4, "x");
 
                 expect(mock).toBeCalledTimes(5);
-            })
+            });
             test("should be called recursively 8x on 3 play", () => {
                 const board = new Board(boardSize);
                 const game = new Game(board);
                 const mock = jest.spyOn(game, "vertical");
-                game.play(3, "x")
-                game.play(6, "x")
-                game.play(9, "x")
+                game.play(3, "x");
+                game.play(6, "x");
+                game.play(9, "x");
 
                 expect(mock).toBeCalledTimes(8);
-            })
-        })
-    })
+            });
+        });
+    });
     describe("#horizontal check condiiton test scope", () => {
         test("should traverse left and right", () => {
             const mockLeft = jest.spyOn(Traverse, "left");
@@ -246,10 +246,10 @@ describe("#play Should call <Board> class methods", () => {
         board = new MockedBoard();
         game = new Game(board);
 
-        game.play(1, "x")
+        game.play(1, "x");
     });
     afterEach(() => {
-        jest.unmock("../lib/board")
+        jest.unmock("../lib/board");
     });
     test("#play calls #board.convertInputToCoordinates", () => {
         expect(board.convertInputToCoordinates).toBeCalledTimes(1);
@@ -271,39 +271,39 @@ describe("#play Should call <Board> class methods", () => {
 describe("#play error handling and return values", () => {
     beforeEach(() => {
         jest.clearAllMocks();
-    })
+    });
     test("should return invalid if board does not markSquare", () => {
         const board = new Board(3);
-        board.markSquare = jest.fn(() => false)
+        board.markSquare = jest.fn(() => false);
         const game = new Game(board);
 
-        expect(game.play(1, "x")).toEqual("invalid")
+        expect(game.play(1, "x")).toEqual("invalid");
     });
     test("should return draw if board is completed", () => {
         const board = new Board(3);
-        board.isCompleted = jest.fn(() => true)
+        board.isCompleted = jest.fn(() => true);
         const game = new Game(board);
 
-        expect(game.play(1, "x")).toEqual("draw")
-    })
+        expect(game.play(1, "x")).toEqual("draw");
+    });
     test("Scenario 1: invalid' game state from #maxGridNumber", () => {
         const board = new Board(3);
-        board.maxGridNumber = jest.fn(() => 9)
+        board.maxGridNumber = jest.fn(() => 9);
         const game = new Game(board);
 
-        expect(game.play(10, "x")).toEqual("invalid")
+        expect(game.play(10, "x")).toEqual("invalid");
         console.warn = jest.fn(value => {
             expect(value).toEqual("woops, invalid board number");
-        })
+        });
     });
     test("Scenario 2: invalid' game state from #convertInputToCoordinates", () => {
         const board = new Board(3);
-        board.convertInputToCoordinates = jest.fn(() => [ -1, -1 ])
+        board.convertInputToCoordinates = jest.fn(() => [-1, -1]);
         const game = new Game(board);
 
-        expect(game.play(10, "x")).toEqual("invalid")
+        expect(game.play(10, "x")).toEqual("invalid");
         console.warn = jest.fn(value => {
             expect(value).toEqual("woops, invalid board number");
-        })
-    })
+        });
+    });
 });

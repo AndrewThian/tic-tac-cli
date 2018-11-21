@@ -16,13 +16,13 @@ export interface IBoard {
 }
 
 export class Board implements IBoard {
-    count: number
+    count: number;
     readonly grid: string[][];
     readonly boardSize: number;
     readonly winCondition: number;
 
     constructor(boardSize: number, winCondition: number = 3) {
-        this.count = 0
+        this.count = 0;
         this.boardSize = boardSize;
         this.winCondition = winCondition;
 
@@ -80,12 +80,12 @@ export class Board implements IBoard {
             return false;
         }
         this.grid[row][col] = symbol;
-        this.count += 1
+        this.count += 1;
         return true;
     }
 
     isCompleted() {
-        return this.maxGridNumber() === this.count
+        return this.maxGridNumber() === this.count;
     }
 
     /**
@@ -105,7 +105,7 @@ export class Board implements IBoard {
     convertInputToCoordinates(inputNumber: number): [number, number] {
         if (inputNumber > this.maxGridNumber()) {
             console.warn("woops, invalid board number");
-            return [ -1, -1 ]
+            return [-1, -1];
         }
         const arrayNumber = inputNumber - 1;
         const row = Math.floor(arrayNumber / this.boardSize);

@@ -45,12 +45,12 @@ describe("Board testsuite", () => {
         expect(col).toEqual(controlCol);
     });
     test(`#convertInputToCoordinates to warn and return negative coordinates if invalid`, () => {
-        const invalidInputNumber = 1000
+        const invalidInputNumber = 1000;
         const board = new Board(boardSize, 3);
         const [row, col] = board.convertInputToCoordinates(invalidInputNumber);
         expect(row).toEqual(-1);
         expect(col).toEqual(-1);
-    })
+    });
     describe("#markSquare test scope", () => {
         afterEach(() => {
             jest.clearAllMocks();
@@ -102,11 +102,11 @@ describe("Board testsuite", () => {
             const col = 1;
             const symbol = "x";
 
-            board.markSquare(symbol, row, col)
-            board.markSquare(symbol, row -1, col)
+            board.markSquare(symbol, row, col);
+            board.markSquare(symbol, row - 1, col);
 
-            expect(board.count).toEqual(2)
-        })
+            expect(board.count).toEqual(2);
+        });
     });
     test(`#print should print according to provided template`, () => {
         const board = new Board(boardSize, 3);
@@ -132,18 +132,18 @@ describe("Board testsuite", () => {
         const board = new Board(boardSize, 3);
         const symbol = "x";
         // first row
-        board.markSquare(symbol, 0, 0)
-        board.markSquare(symbol, 0, 1)
-        board.markSquare(symbol, 0, 2)
+        board.markSquare(symbol, 0, 0);
+        board.markSquare(symbol, 0, 1);
+        board.markSquare(symbol, 0, 2);
         // second row
-        board.markSquare(symbol, 1, 0)
-        board.markSquare(symbol, 1, 1)
-        board.markSquare(symbol, 1, 2)
+        board.markSquare(symbol, 1, 0);
+        board.markSquare(symbol, 1, 1);
+        board.markSquare(symbol, 1, 2);
         // third row
-        board.markSquare(symbol, 2, 0)
-        board.markSquare(symbol, 2, 1)
-        board.markSquare(symbol, 2, 2)
+        board.markSquare(symbol, 2, 0);
+        board.markSquare(symbol, 2, 1);
+        board.markSquare(symbol, 2, 2);
 
-        expect(board.isCompleted()).toEqual(true)
-    })
+        expect(board.isCompleted()).toEqual(true);
+    });
 });
