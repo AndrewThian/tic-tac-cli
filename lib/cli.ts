@@ -30,6 +30,7 @@ export class CLI extends EventEmitter implements ICLI {
 
     constructor() {
         super();
+
         this.config = {
             input: process.stdin,
             output: process.stdout,
